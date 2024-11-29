@@ -6,11 +6,12 @@ const WorksOnDetailCard = ({ detailWorksOn }) => {
     return (
         <>
             <Container className="book-details">
-                <WorksOnDetail label="Id" value={detailWorksOn.workNo} />
-                <WorksOnDetail label="Project Name" value={detailWorksOn.projectName} />
-                <WorksOnDetail label="Employee Name" value={detailWorksOn.employeeName } />
-                <WorksOnDetail label="Date Worked" value={detailWorksOn.dateWorked} />
-                <WorksOnDetail label="Hours Worked" value={detailWorksOn.hoursWorked} />
+                <WorksOnDetail label="Id" value={detailWorksOn.worksNo} />
+                <WorksOnDetail label="Department Number" value={detailWorksOn.deptNo} />
+                <WorksOnDetail label="Project Name" value={detailWorksOn.projName} />
+                <WorksOnDetail label="Supervisor Name" value={detailWorksOn.superVisorName} />
+                <WorksOnDetail label="Employee Name" value={detailWorksOn.empName } />
+                <WorksOnDetail label="Hours Worked" value={detailWorksOn.hoursworked} />
             </Container>
         </>
 

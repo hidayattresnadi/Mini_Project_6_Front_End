@@ -69,7 +69,7 @@ const UserForm = ({ addUser, employees, errors, shouldNavigate, setShouldNavigat
                     options={employees}
                     value={formData.employeeId}
                     labelKey={["employeeName"]}
-                    valueKey={'employeeId'}
+                    valueKey={'empNo'}
                     optionTitle={'Choose Employee'}
                     onChange={(e) => handleInputChange(e)}
                     className="form-select"

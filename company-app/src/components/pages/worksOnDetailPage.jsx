@@ -4,9 +4,10 @@ import WorksOnDetailCard from '../modules/worksOnCard';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from '../elements/loading';
+import WorksOnService from '../../services/worksOns';
 
 function WorksOnDetailPage() {
-    const { empNo, projNo } = useParams();
+    const { id } = useParams();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [worksOnData,setWorksOnData] = useState();
@@ -14,7 +15,8 @@ function WorksOnDetailPage() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const worksOnResponse = await axios.get(`http://localhost:5227/WorksOn/detail/${empNo}/${projNo}`);
+                const worksOnResponse = await WorksOnService.get(id);
+                console.log(worksOnResponse)
                 setWorksOnData(worksOnResponse.data);
             } catch (error) {
                 setError(true);
@@ -27,7 +29,7 @@ function WorksOnDetailPage() {
             }
         };
         loadData();
-    }, [empNo,projNo, setWorksOnData]);
+    }, [id, setWorksOnData]);
 
     if (loading) {
         return <LoadingSpinner/>; 

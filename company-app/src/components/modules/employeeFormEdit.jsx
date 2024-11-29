@@ -4,8 +4,9 @@ import Button from '../elements/button';
 import RadioGroup from './radioGroup';
 import LabeledTextArea from '../widgets/labeledTextArea';
 import SelectField from '../widgets/selectField';
+import { useSelector } from 'react-redux';
 
-const EmployeeFormEdit = ({employees, editingEmployee, updateEmployee, departments, errors, shouldNavigate, setShouldNavigate }) => {
+const EmployeeFormEdit = ({ employees, editingEmployee, updateEmployee, departments, errors, shouldNavigate, setShouldNavigate }) => {
     const [formData, setFormData] = useState({
         employeeName: '',
         ssn: '',
@@ -19,8 +20,9 @@ const EmployeeFormEdit = ({employees, editingEmployee, updateEmployee, departmen
         emailAddress: '',
         jobPosition: '',
         superVisorId: '',
-        sex:''
+        sex: ''
     });
+    const { user: currentUser } = useSelector(state => state.auth);
 
     useEffect(() => {
         setFormData({
@@ -65,7 +67,7 @@ const EmployeeFormEdit = ({employees, editingEmployee, updateEmployee, departmen
                 emailAddress: '',
                 jobPosition: '',
                 superVisorId: '',
-                sex:''
+                sex: ''
             })
             setShouldNavigate(!shouldNavigate);
         }
@@ -89,7 +91,9 @@ const EmployeeFormEdit = ({employees, editingEmployee, updateEmployee, departmen
                     />
                     {errors?.employeeName && <h6 className="text-start">{errors.employeeName}</h6>}
 
-                    <InputField
+                    {currentUser.roles.includes('Administrator') && (
+                        <>
+                              <InputField
                         label="SSN"
                         type="text"
                         id="ssn"
@@ -97,15 +101,21 @@ const EmployeeFormEdit = ({employees, editingEmployee, updateEmployee, departmen
                         onChange={handleInputChange}
                     />
                     {errors?.ssn && <h6 className="text-start">{errors.ssn}</h6>}
+                        </>
+                    )}
 
-                    <InputField
-                        label="Salary"
-                        type="number"
-                        id="sallary"
-                        value={formData.sallary}
-                        onChange={handleInputChange}
-                    />
-                    {errors?.sallary && <h6 className="text-start">{errors.sallary}</h6>}
+                    {currentUser.roles.includes('Administrator') && (
+                        <>
+                            <InputField
+                                label="Salary"
+                                type="number"
+                                id="sallary"
+                                value={formData.sallary}
+                                onChange={handleInputChange}
+                            />
+                            {errors?.salary && <h6 className="text-start text-danger">{errors.salary}</h6>}
+                        </>
+                    )}
 
                     <InputField
                         label="Date of Birth"
@@ -187,17 +197,17 @@ const EmployeeFormEdit = ({employees, editingEmployee, updateEmployee, departmen
                 </div>
 
                 <div className="col-12 mt-3">
-                <SelectField
-                    label="Select Supervisor"
-                    id="superVisorId"
-                    options={employees}
-                    value={formData.superVisorId}
-                    labelKey={["employeeName"]}
-                    valueKey={'empNo'}
-                    optionTitle={'Choose Supervisor'}
-                    onChange={(e) => handleInputChange(e, 'superVisorId')}
-                    className="form-select"
-                />
+                    <SelectField
+                        label="Select Supervisor"
+                        id="superVisorId"
+                        options={employees}
+                        value={formData.superVisorId}
+                        labelKey={["employeeName"]}
+                        valueKey={'empNo'}
+                        optionTitle={'Choose Supervisor'}
+                        onChange={(e) => handleInputChange(e, 'superVisorId')}
+                        className="form-select"
+                    />
                     <RadioGroup
                         options={options}
                         name="sex"

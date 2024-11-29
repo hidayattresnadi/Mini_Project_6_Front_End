@@ -4,7 +4,10 @@ import WorksOnForm from '../modules/worksOnForm';
 import FormLayout from '../templates/FormLayout';
 import { useEffect, useState } from 'react';
 import { failedSwal, successSwal, validateWorksOn } from '../../helper';
-import axios from 'axios';
+import WorksOnService from '../../services/worksOns';
+import ProjectService from '../../services/projectService';
+import EmployeeService from '../../services/employeeService';
+import { useSelector } from 'react-redux';
 
 function WorksOnFormPage({ setEmployees, employees, projects, setProjects, editingWorksOn,setEditingWorksOn, errors, setErrors }) {
     const { id } = useParams();
@@ -12,13 +15,16 @@ function WorksOnFormPage({ setEmployees, employees, projects, setProjects, editi
     const [shouldNavigate, setShouldNavigate] = useState();
     const [loading, setLoading] = useState(true);
     const [errorStatus, setErrorStatus] = useState();
+    const { user: currentUser } = useSelector(state => state.auth);
+
+    let isSuperVisor = currentUser?.roles.includes("Employee Supervisor")
 
     const addWorksOn = async (worksOn) => {
         try {
             const listErrors = validateWorksOn(worksOn)
             setErrors(listErrors);
             if (Object.keys(listErrors).length === 0) {
-                await axios.post('http://localhost:5227/WorksOn', worksOn)
+                await WorksOnService.create(worksOn)
                 successSwal('WorksOn Added successfully');
             }
             return listErrors;
@@ -36,7 +42,7 @@ function WorksOnFormPage({ setEmployees, employees, projects, setProjects, editi
             setErrors(listErrors);
 
             if (Object.keys(listErrors).length === 0) {
-                await axios.put(`http://localhost:5227/WorksOn/${id}`, worksOn)
+                await WorksOnService.update(id,worksOn)
                 successSwal('WorksOn Edited successfully');
                 setEditingWorksOn(null);
             }
@@ -53,17 +59,17 @@ function WorksOnFormPage({ setEmployees, employees, projects, setProjects, editi
     useEffect(() => {
         const loadData = async () => {
             try {
-                const ProjectResponse = await axios.get(`http://localhost:5227/Project/select`);
+                const ProjectResponse = await ProjectService.getAll()
                 setProjects(ProjectResponse.data);
 
-                const EmployeeResponse = await axios.get(`http://localhost:5227/Employee/select`);
-                setEmployees(EmployeeResponse.data);
+                const EmployeeResponse = await EmployeeService.getAll()
+                setEmployees(EmployeeResponse.data.data);
                 if (!id) {
                     setLoading(false);
                     return;
                 }
 
-                const worksOnResponse = await axios.get(`http://localhost:5227/WorksOn/${id}`);
+                const worksOnResponse = await WorksOnService.get(id)
                 setEditingWorksOn(worksOnResponse.data);
             } catch (error) {
                 setErrorStatus(true);
@@ -79,7 +85,13 @@ function WorksOnFormPage({ setEmployees, employees, projects, setProjects, editi
 
     useEffect(()=>{
         if (shouldNavigate) {
-            navigate('/assignments');
+            if(!isSuperVisor) {
+                navigate('/assignments');
+            }
+            else if (isSuperVisor) {
+                navigate('/assignment/own');
+            }
+            
         }
     }, [shouldNavigate, navigate])
 

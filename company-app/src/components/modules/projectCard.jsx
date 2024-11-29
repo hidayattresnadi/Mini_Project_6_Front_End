@@ -6,9 +6,10 @@ const ProjectDetailCard = ({ detailProject}) => {
     return (
         <>
             <Container className="book-details">
-                <ProjectDetail label="Id" value={detailProject.projNo} />
-                <ProjectDetail label="Project Name" value={detailProject.projectName} />
+                <ProjectDetail label="Id" value={detailProject.projectId} />
+                <ProjectDetail label="Project Name" value={detailProject.name} />
                 <ProjectDetail label="Department" value={detailProject.departmentName} />
+                <ProjectDetail label="Location" value={detailProject.locationName} />
             </Container>
         </>
 

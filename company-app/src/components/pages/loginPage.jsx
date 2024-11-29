@@ -17,7 +17,7 @@ function LoginFormPage({ setErrors, errors }) {
 
     useEffect(() => {
         if (isSuccess || user) {
-            navigate('/employees');
+            navigate('/profile');
         }
 
         dispatch(reset());

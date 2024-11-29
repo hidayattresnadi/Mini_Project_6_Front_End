@@ -62,11 +62,12 @@ export const logout = createAsyncThunk(
 export const refreshToken = createAsyncThunk(
     'auth/refreshToken',
     async (_, { rejectWithValue }) => {
-        try {      
+        try {
             const response = await authService.refreshToken();
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
+            
         }
     }
 );

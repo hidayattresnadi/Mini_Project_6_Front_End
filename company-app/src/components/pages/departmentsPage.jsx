@@ -11,7 +11,7 @@ import ReactPaginate from 'react-paginate';
 import Label from '../elements/label';
 import SelectOption from '../elements/selectOptions';
 
-function DepartmentsPage({ columns = { columns } }) {
+function DepartmentsPage({ columns = { columns }}) {
     const navigate = useNavigate();
     const buttonTitle = 'Add Department';
     const onClick = () => navigate('/departments/new')

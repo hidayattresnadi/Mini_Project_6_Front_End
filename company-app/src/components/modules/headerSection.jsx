@@ -19,13 +19,13 @@ const Header = ({ setEditingEmployee, setEditingDepartment, setEditingProject, s
   }
   const { user: currentUser } = useSelector(state => state.auth);
   const handleLogout = async () => {
-    dispatch(logout());
+    await dispatch(logout())
     navigate('/login');
   };
 
   const menuItems = [
     {
-      label: 'Home', path: '/', visibleForAll: true
+      label: 'Home', path: '/', visibleForRoles: ['Administrator', 'HR Manager', 'Department Manager', 'Employee Supervisor', 'Employee']
     },
     {
       label: 'Login', path: '/login', isAuthenticated: false
@@ -49,19 +49,68 @@ const Header = ({ setEditingEmployee, setEditingDepartment, setEditingProject, s
       label: 'Employees', path: '/employees', visibleForRoles: ['Administrator', 'HR Manager']
     },
     {
-      label: 'Departments', path: '/departments', visibleForRoles: ['Administrator', 'HR Manager']
+      label:'Employees', path:'/employees/own', visibleForRoles :  ['Department Manager','Employee Supervisor']
+
     },
     {
-      label: 'Projects', path: '/projects', visibleForRoles: ['Administrator', 'HR Manager']
+      label: 'Departments', path: '/departments', visibleForRoles: ['Administrator', 'HR Manager', 'Department Manager', 'Employee Supervisor', 'Employee']
     },
     {
-      label: 'WorksOns', path: '/assignments', visibleForRoles: ['Administrator', 'HR Manager']
+      label:'Manage Department', path:`/departments/own`, visibleForRoles:['Department Manager']
+
     },
     {
-      label: 'Dependents', path: '/dependents', visibleForRoles: ['Administrator', 'HR Manager']
+      label: 'Projects', path: '/projects', visibleForRoles: ['Administrator', 'HR Manager', 'Department Manager', 'Employee Supervisor', 'Employee']
+    },
+    {
+      label: 'WorksOns', path: '/assignments', visibleForRoles: ['Administrator', 'HR Manager', 'Department Manager', 'Employee Supervisor', 'Employee']
+    },
+    {
+      label: 'Dependents', path: '/dependents', visibleForRoles: ['Administrator', 'HR Manager','Employee']
     },
 
   ];
+
+  let isAdmin = currentUser?.roles.includes("Adminstrator")
+  let isEmployee = currentUser?.roles.includes("Employee")
+  let isDepartmentManager = currentUser?.roles.includes("Department Manager")
+  let isSuperVisor = currentUser?.roles.includes("Employee Supervisor")
+  if(!isAdmin ){
+    if(isDepartmentManager){
+      menuItems.forEach(item => {
+        if (item.label === 'Departments') {
+            item.path = '/departments/public';
+        }
+        else if (item.label === 'WorksOns') {
+          item.path = '/assignment/own';
+      } 
+    });
+    }
+    else if(isSuperVisor){
+      menuItems.forEach(item => {
+        if (item.label === 'Departments') {
+            item.path = '/departments/public';
+        }
+        else if (item.label === 'WorksOns') {
+          item.path = '/assignment/own';
+      }
+      else if (item.label === 'Projects') {
+        item.path = '/projects/public';
+    }
+    });
+    }
+    else if(isEmployee){
+      menuItems.forEach(item => {
+        if (item.label === 'Departments') {
+            item.path = '/departments/public';
+        } else if (item.label === 'Projects') {
+            item.path = '/projects/public';
+        } else if (item.label === 'WorksOns') {
+            item.path = '/assignments/public';
+        }
+    });
+    }
+  }
 
   const isMenuVisible = (item) => {
     // Selalu tampilkan menu untuk semua user
@@ -77,7 +126,7 @@ const Header = ({ setEditingEmployee, setEditingDepartment, setEditingProject, s
       return true;
     }
 
-    //jika user sudah login, tampilkan logout
+
     if (item.label == 'Profile' && currentUser) {
       return true;
     }
@@ -132,7 +181,7 @@ const Header = ({ setEditingEmployee, setEditingDepartment, setEditingProject, s
                         handleNavigation(item.path);
                       }
                     }}
-                    
+
                   >
                     {item.label}
                   </span>

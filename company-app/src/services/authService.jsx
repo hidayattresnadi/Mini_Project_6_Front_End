@@ -25,11 +25,19 @@ const logout = async (email) => {
     }
 };
 
+const refreshToken = async () => {
+    const response = await apiClient.post("User/refresh-Token");
+    if (response.data.token) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+    }
+};
+
 
 const AuthService = {
     create,
     login,
-    logout
+    logout,
+    refreshToken
 };
 
 export default AuthService;

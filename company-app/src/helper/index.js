@@ -74,9 +74,9 @@ export function validateEmployee(employee) {
         newErrors.jobPosition = 'Job Position is required';
     }
 
-    if(!employee.departmentId) {
-        newErrors.departmentId = 'Please choose Department'
-    }
+    // if(!employee.departmentId) {
+    //     newErrors.departmentId = 'Please choose Department'
+    // }
     
     return newErrors;
 };
@@ -90,9 +90,9 @@ export function validateDepartment(department) {
         newErrors.name = 'Department Name is required'
     }
 
-    if (!department.mgrEmpNo) {
-        newErrors.mgrEmpNo = 'Department Manager is required'
-    }
+    // if (!department.mgrEmpNo) {
+    //     newErrors.mgrEmpNo = 'Department Manager is required'
+    // }
     if (!department.number) {
         newErrors.number = 'Number is required'
     }
@@ -103,11 +103,11 @@ export function validateDepartment(department) {
 export function validateProject(project) {
     const newErrors = {};
 
-    if (!project.projName) {
+    if (!project.name) {
         newErrors.projName = 'Project Name is required'
     }
 
-    if (!project.deptNo) {
+    if (!project.deptId) {
         newErrors.deptNo = 'Department is required'
     }
 
@@ -123,10 +123,6 @@ export function validateWorksOn(worksOn){
 
     if (!worksOn.empNo) {
         newErrors.empNo = 'Employee Number is required'
-    }
-
-    if (!worksOn.dateWorked) {
-        newErrors.dateWorked = 'Date Worked is required'
     }
 
     if (!worksOn.hoursWorked) {

@@ -12,9 +12,10 @@ function TableLayout({ title, children, buttonTitle, onClick }) {
                 </Container>
 
                 <Container className="d-flex justify-content-center mt-4">
-                    <Button className='btn btn-primary' onClick={onClick}  style={{ width: "500px", padding: "12px 24px", fontSize: "18px" }}>
+                    {buttonTitle ? <Button className='btn btn-primary' onClick={onClick}  style={{ width: "500px", padding: "12px 24px", fontSize: "18px" }}>
                         {buttonTitle}
-                    </Button>
+                    </Button> : '' }
+                    
                 </Container>
             </Container>
         </Container>

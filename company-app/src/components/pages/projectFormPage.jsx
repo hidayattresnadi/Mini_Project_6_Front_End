@@ -3,8 +3,9 @@ import LoadingSpinner from '../elements/loading';
 import ProjectForm from '../modules/projectForm';
 import FormLayout from '../templates/FormLayout';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { failedSwal, successSwal, validateProject } from '../../helper';
+import ProjectService from '../../services/projectService';
+import DepartmentService from '../../services/departmentService';
 
 function ProjectFormPage({ setErrors, departments, editingProject, setEditingProject, errors, setDepartments }) {
     const { id } = useParams();
@@ -18,12 +19,15 @@ function ProjectFormPage({ setErrors, departments, editingProject, setEditingPro
             const listErrors = validateProject(project)
             setErrors(listErrors);
             if (Object.keys(listErrors).length === 0) {
-                await axios.post('http://localhost:5227/Project', project)
+                console.log(project)
+                project.deptId = parseInt(project.deptId)
+                await ProjectService.create(project)
                 successSwal('Project Added successfully');
             }
             return listErrors;
 
         } catch (error) {
+            console.log(error)
             setErrors(error.response.data)
             failedSwal(error.response.data)
             return error.response.data
@@ -36,7 +40,8 @@ function ProjectFormPage({ setErrors, departments, editingProject, setEditingPro
             setErrors(listErrors);
 
             if (Object.keys(listErrors).length === 0) {
-                await axios.put(`http://localhost:5227/Project/${id}`, project)
+                project.deptId = parseInt(project.deptId)
+                await ProjectService.update(id, project)
                 successSwal('Project Edited successfully');
                 setEditingProject(null);
             }
@@ -53,13 +58,13 @@ function ProjectFormPage({ setErrors, departments, editingProject, setEditingPro
     useEffect(() => {
         const loadData = async () => {
             try {
-                const DepartmentResponse = await axios.get(`http://localhost:5227/Department/select`);
-                setDepartments(DepartmentResponse.data);
+                const DepartmentResponse = await DepartmentService.getAll();
+                setDepartments(DepartmentResponse.data.data);
                 if (!id) {
                     setLoading(false);
                     return;
                 }
-                const projectResponse = await axios.get(`http://localhost:5227/Project/${id}`);
+                const projectResponse = await ProjectService.get(id);
                 setEditingProject(projectResponse.data);
             } catch (error) {
                 setErrorStatus(true);

@@ -6,6 +6,7 @@ import LoadingSpinner from '../elements/loading';
 import EmployeeService from '../../services/employeeService';
 import Container from '../elements/container';
 import Button from '../elements/button';
+import { useSelector } from 'react-redux';
 
 function EmployeeDetailPage() {
     const { id } = useParams();
@@ -13,6 +14,8 @@ function EmployeeDetailPage() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [employeeData, setEmployeeData] = useState();
+    const { user: currentUser } = useSelector(state => state.auth);
+    let isAdmin = currentUser.roles.includes('Administrator')
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -46,9 +49,10 @@ function EmployeeDetailPage() {
             <DetailLayout title="Employee Details">
                 <EmployeeDetailCard detailEmployee={employeeData} />
                 <Container className="d-flex justify-content-center mt-4">
-                    <Button className='btn btn-primary' onClick={onClick} style={{ width: "500px", padding: "12px 24px", fontSize: "18px" }}>
+                    {isAdmin ? <Button className='btn btn-primary' onClick={onClick} style={{ width: "500px", padding: "12px 24px", fontSize: "18px" }}>
                         Deactivate Employee
-                    </Button>
+                    </Button> :''}
+                    
                 </Container>
             </DetailLayout>
         </>

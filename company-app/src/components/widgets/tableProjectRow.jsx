@@ -4,9 +4,9 @@ import Icon from '../elements/icon';
 
 const TableProjectRow = ({ project, onEdit, onDelete, onDetail }) => (
     <tr>
-        <TableCell>{project.projNo}</TableCell>
-        <TableCell>{project.projName}</TableCell>
-        <TableCell>{project.deptName}</TableCell>
+        <TableCell>{project.projectId}</TableCell>
+        <TableCell>{project.name}</TableCell>
+        <TableCell>{project.departmentName}</TableCell>
         <TableCell>
             <Button onClick={onEdit} className="btn btn-primary" ariaLabel="Edit Project">
                 <Icon className="fas fa-pencil-alt" />

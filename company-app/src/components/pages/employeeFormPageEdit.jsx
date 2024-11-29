@@ -49,7 +49,7 @@ function EmployeeFormPageEdit({employees, setEmployees, setErrors, setEditingEmp
 
             } catch (error) {
                 setErrorStatus(true);
-                console.log(error);
+                console.log(error)
             } finally {
                 setTimeout(() => {
                     setLoading(false);
@@ -57,13 +57,16 @@ function EmployeeFormPageEdit({employees, setEmployees, setErrors, setEditingEmp
             }
         };
         loadData();
-    }, [id, setDepartments, setEditingEmployee,setEmployees, setErrorStatus]);
+    }, []);
 
     useEffect(() => {
         if (shouldNavigate) {
             navigate('/employees');
         }
-    }, [shouldNavigate, navigate])
+        else if (errorStatus){
+            navigate('/unauthorized')
+        }
+    }, [shouldNavigate, navigate, errorStatus])
 
     if (loading) return <LoadingSpinner />;
     if (errorStatus) return <p>Error loading employees</p>;

@@ -25,6 +25,7 @@ function DepartmentFormPage({ setEmployees, setErrors, editingDepartment,employe
             return listErrors;
 
         } catch (error) {
+            console.log(error)
             setErrors(error.response.data)
             failedSwal(error.response.data)
             return error.response.data

@@ -15,11 +15,11 @@ const TableWorksOns = ({ worksOns, onDelete, columns }) => {
                             key={worksOn.workNo}
                             worksOn={worksOn}
                             onEdit={() => {
-                                navigate(`/assignments/${worksOn.workNo}`)
+                                navigate(`/assignments/${worksOn.worksNo}`)
                             }}
-                            onDelete={() => onDelete(worksOn.workNo)}
+                            onDelete={() => onDelete(worksOn.worksNo)}
                             onDetail={() => {
-                                navigate(`/assignments/${worksOn.empNo}/${worksOn.projNo}`)
+                                navigate(`/assignments/detail/${worksOn.worksNo}`)
                             }}
                         />
                     ))}

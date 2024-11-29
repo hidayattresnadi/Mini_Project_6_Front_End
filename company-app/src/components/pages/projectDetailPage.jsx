@@ -4,6 +4,7 @@ import ProjectDetailCard from '../modules/projectCard';
 import LoadingSpinner from '../elements/loading';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import ProjectService from '../../services/projectService';
 
 function ProjectDetailPage() {
     const { id } = useParams();
@@ -13,7 +14,7 @@ function ProjectDetailPage() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const ProjectResponse = await axios.get(`http://localhost:5227/Project/detail/${id}`);
+                const ProjectResponse = await ProjectService.get(id);
                 setProjectData(ProjectResponse.data);
             } catch (error) {
                 setError(true);

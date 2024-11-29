@@ -12,14 +12,14 @@ const TableProjects = ({ projects, onDelete, columns }) => {
                 <tbody>
                     {projects.map((project) => (
                         <TableProjectRow
-                            key={project.projNo}
+                            key={project.projectId}
                             project={project}
                             onEdit={() => {
-                                navigate(`/projects/${project.projNo}`)
+                                navigate(`/projects/${project.projectId}`)
                             }}
-                            onDelete={() => onDelete(project.projNo)}
+                            onDelete={() => onDelete(project.projectId)}
                             onDetail={() => {
-                                navigate(`/projects/detail/${project.projNo}`)
+                                navigate(`/projects/detail/${project.projectId}`)
                             }}
                         />
                     ))}

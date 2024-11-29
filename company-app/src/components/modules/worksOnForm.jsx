@@ -7,8 +7,7 @@ const WorksOnForm = ({ shouldNavigate, setShouldNavigate, addWorksOn, employees,
     const [formData, setFormData] = useState({
         projNo: '',
         empNo: '',
-        hoursWorked: '',
-        dateWorked: ''
+        hoursWorked: ''
     });
 
     useEffect(() => {
@@ -17,14 +16,12 @@ const WorksOnForm = ({ shouldNavigate, setShouldNavigate, addWorksOn, employees,
                 projNo: editingWorksOn.projNo,
                 empNo: editingWorksOn.empNo,
                 hoursWorked: editingWorksOn.hoursworked,
-                dateWorked: editingWorksOn.dateWorked
             });
         } else {
             setFormData({
                 projNo: '',
                 empNo: '',
                 hoursWorked: '',
-                dateWorked: ''
             });
         }
     }, [editingWorksOn]);
@@ -47,7 +44,6 @@ const WorksOnForm = ({ shouldNavigate, setShouldNavigate, addWorksOn, employees,
                     projNo: '',
                     empNo: '',
                     hoursWorked: '',
-                    dateWorked: ''
                 });
                 setShouldNavigate(!shouldNavigate)
             }
@@ -58,7 +54,6 @@ const WorksOnForm = ({ shouldNavigate, setShouldNavigate, addWorksOn, employees,
                     projNo: '',
                     empNo: '',
                     hoursWorked: '',
-                    dateWorked: ''
                 });
                 setShouldNavigate(!shouldNavigate)
             }
@@ -73,8 +68,8 @@ const WorksOnForm = ({ shouldNavigate, setShouldNavigate, addWorksOn, employees,
                     id="projNo"
                     options={projects}
                     value={formData.projNo}
-                    labelKey={["projName"]}
-                    valueKey={'projNo'}
+                    labelKey={["name"]}
+                    valueKey={'projectId'}
                     optionTitle={'Choose Project'}
                     onChange={(e) => handleInputChange(e, 'projNo')}
                     className="form-select"
@@ -85,7 +80,7 @@ const WorksOnForm = ({ shouldNavigate, setShouldNavigate, addWorksOn, employees,
                     id="empNo"
                     options={employees}
                     value={formData.empNo}
-                    labelKey={["fname","lname"]}
+                    labelKey={["employeeName"]}
                     valueKey={'empNo'}
                     optionTitle={'Choose Employee'}
                     onChange={(e) => handleInputChange(e, 'empNo')}
@@ -100,14 +95,6 @@ const WorksOnForm = ({ shouldNavigate, setShouldNavigate, addWorksOn, employees,
                     onChange={handleInputChange}
                 />
                 {errors?.hoursWorked ? <h6 className='text-start'>{errors.hoursWorked}</h6> : ''}
-                <InputField
-                    label="Date Worked"
-                    type="date"
-                    id="dateWorked"
-                    value={formData.dateWorked}
-                    onChange={handleInputChange}
-                />
-                {errors?.dateWorked ? <h6 className='text-start'>{errors.dateWorked}</h6> : ''}
 
                 <Button type="submit" className="btn btn-primary mt-3 w-100">
                     Submit

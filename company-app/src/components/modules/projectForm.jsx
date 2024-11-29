@@ -3,22 +3,25 @@ import InputField from '../widgets/inputField';
 import Button from '../elements/button';
 import SelectField from '../widgets/selectField';
 
-const ProjectForm = ({ addProject, departments, updateProject, editingProject, errors, shouldNavigate,setShouldNavigate }) => {
+const ProjectForm = ({ addProject, departments, updateProject, editingProject, errors, shouldNavigate, setShouldNavigate }) => {
     const [formData, setFormData] = useState({
-        projName: '',
-        deptNo: ''
+        name: '',
+        deptId: '',
+        locationName:''
     });
 
     useEffect(() => {
         if (editingProject) {
             setFormData({
-                projName: editingProject.projName,
-                deptNo: editingProject.deptNo,
+                name: editingProject.name,
+                deptId: editingProject.deptId,
+                locationName:editingProject.locationName
             });
         } else {
             setFormData({
-                projName: '',
-                deptNo: ''
+                name: '',
+                deptId: '',
+                locationName:''
             });
         }
     }, [editingProject]);
@@ -38,8 +41,9 @@ const ProjectForm = ({ addProject, departments, updateProject, editingProject, e
             const result = await updateProject(formData);
             if (Object.keys(result).length === 0) {
                 setFormData({
-                    projName: '',
-                    deptNo: ''
+                    name: '',
+                    deptId: '',
+                    locationName:''
                 });
                 setShouldNavigate(!shouldNavigate)
             }
@@ -47,8 +51,9 @@ const ProjectForm = ({ addProject, departments, updateProject, editingProject, e
             const result = await addProject(formData);
             if (Object.keys(result).length === 0) {
                 setFormData({
-                    projName: '',
-                    deptNo: ''
+                    name: '',
+                    deptId: '',
+                    locationName:''
                 });
                 setShouldNavigate(!shouldNavigate)
             }
@@ -61,23 +66,29 @@ const ProjectForm = ({ addProject, departments, updateProject, editingProject, e
                 <InputField
                     label="Project Name"
                     type="text"
-                    id="projName"
-                    value={formData.projName}
+                    id="name"
+                    value={formData.name}
                     onChange={handleInputChange}
                 />
-                {errors?.projName ? <h6 className='text-start'>{errors.projName}</h6> : ''}
+
+                <InputField
+                    label="Location"
+                    type="text"
+                    id="locationName"
+                    value={formData.locationName}
+                    onChange={handleInputChange}
+                />
                 <SelectField
                     label="Select Department"
-                    id="deptNo"
+                    id="deptId"
                     options={departments}
-                    value={formData.deptNo}
-                    labelKey={ ["deptName"]}
-                    valueKey={'deptNo'}
+                    value={formData.deptId}
+                    labelKey={["departmentName"]}
+                    valueKey={'departmentID'}
                     optionTitle={'Choose Department'}
-                    onChange={(e) => handleInputChange(e,'deptNo')}
+                    onChange={(e) => handleInputChange(e, 'deptNo')}
                     className="form-select"
                 />
-                {errors?.deptNo ? <h6 className='text-start'>{errors.deptNo}</h6> : ''}
 
                 <Button type="submit" className="btn btn-primary mt-3 w-100">
                     Submit

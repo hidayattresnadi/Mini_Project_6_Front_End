@@ -5,6 +5,10 @@ import Icon from '../elements/icon';
 import Text from '../elements/text';
 import axios from 'axios';
 import LoadingSpinner from '../elements/loading';
+import ProjectService from '../../services/projectService';
+import EmployeeService from '../../services/employeeService';
+import DependentService from '../../services/dependentService';
+import DepartmentService from '../../services/departmentService';
 function HomePage() {
     const [errorStatus,setErrorStatus] = useState()
     const [Loading, setLoading] = useState(true)
@@ -15,14 +19,14 @@ function HomePage() {
     useEffect(() => {
         const myFetch = async () => {
             try {
-                const projectResponse = await axios.get(`http://localhost:5227/Project/select`);
+                const projectResponse = await ProjectService.getAll();
                 setProjects(projectResponse.data);
 
-                const employeeResponse = await axios.get(`http://localhost:5227/Employee/select`);
-                setEmployees(employeeResponse.data);
+                const employeeResponse = await EmployeeService.getAll();
+                setEmployees(employeeResponse.data.data);
 
-                const departmentResponse = await axios.get(`http://localhost:5227/Department/select`);
-                setDepartments(departmentResponse.data);
+                const departmentResponse = await DepartmentService.getAll();
+                setDepartments(departmentResponse.data.data);
 
             } catch (error) {
                 setErrorStatus(true);
